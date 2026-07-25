@@ -1,65 +1,80 @@
+<div align="center">
+
 # romarr-community-packs
 
-Platform pack complet pour [Romarr](https://github.com/sharkhunterr/romarr) — mirror du builtin **plus** 6 plateformes additionnelles.
+**A complete platform pack for [Romarr](https://github.com/sharkhunterr/romarr)** — a mirror of the builtin pack, plus 6 additional platforms.
 
-## Contenu
+</div>
 
-| Fichier | Version | Plateformes |
-|---|---|---|
+---
+
+## Overview
+
+| File | Version | Platforms |
+|------|---------|-----------|
 | `packs/platform-pack-community.yaml` | `2026.07.100` | 60 (54 builtin + 6 additions) |
 
-### Ce qui est ajouté par rapport au builtin `2026.05.002`
+Every platform ships with its IGDB, ScreenScraper, and MobyGames IDs so the metadata scraper can match them automatically.
 
-**Gen 8-9 home consoles** (le builtin s'arrête à la gen 7-8) :
+## What's added over builtin `2026.05.002`
 
-- `ps4` — PlayStation 4 · Sony · 2013
-- `ps5` — PlayStation 5 · Sony · 2020
-- `xbox-one` — Xbox One · Microsoft · 2013
-- `xbox-series` — Xbox Series X/S · Microsoft · 2020
+**Gen 8–9 home consoles** — the builtin stops at gen 7–8:
 
-**Retro Japonais** (souvent absents des DAT packs occidentaux) :
+| Slug | Platform | Manufacturer | Year |
+|------|----------|--------------|------|
+| `ps4` | PlayStation 4 | Sony | 2013 |
+| `ps5` | PlayStation 5 | Sony | 2020 |
+| `xbox-one` | Xbox One | Microsoft | 2013 |
+| `xbox-series` | Xbox Series X/S | Microsoft | 2020 |
 
-- `x68000` — Sharp X68000 · 1987
-- `pc98` — NEC PC-9800 Series · 1982
+**Japanese retro** — often missing from Western DAT packs:
 
-Chaque plateforme embarque les IDs IGDB, ScreenScraper et MobyGames pour que le scraper métadonnées les trouve automatiquement.
+| Slug | Platform | Manufacturer | Year |
+|------|----------|--------------|------|
+| `x68000` | Sharp X68000 | Sharp | 1987 |
+| `pc98` | NEC PC-9800 Series | NEC | 1982 |
 
-## Installation dans Romarr
+## Installation
 
-**Settings → Platforms → Pack sources** → Add source :
+In Romarr, go to **Settings → Platforms → Pack sources → Add source**:
 
-- **Nom** : `Community pack`
-- **URL** (dir) : `https://github.com/sharkhunterr/romarr-plateform-pack/tree/main/packs`
-  
-  ou **URL** (raw single-file) : `https://raw.githubusercontent.com/sharkhunterr/romarr-plateform-pack/main/packs/platform-pack-community.yaml`
+- **Name:** `Community pack`
+- **URL (directory):**
+  ```
+  https://github.com/sharkhunterr/romarr-plateform-pack/tree/main/packs
+  ```
+- **URL (raw, single file):**
+  ```
+  https://raw.githubusercontent.com/sharkhunterr/romarr-plateform-pack/main/packs/platform-pack-community.yaml
+  ```
 
-Puis **Preview** → **Apply now**. Les 6 nouveaux slugs apparaissent en `+ inserted`, les 54 existants en `~ updated` ou `= skipped` selon les métadonnées.
+Then click **Preview → Apply now**. The 6 new slugs appear as `+ inserted`, and the 54 existing ones as `~ updated` or `= skipped` depending on their metadata.
 
 ## Auto-sync
 
-Active le job `PackSourcesSync` dans **Settings → Tasks** (cron `0 5 * * *` par défaut). Les updates poussés sur ce repo landent le lendemain matin sans intervention.
+Enable the `PackSourcesSync` job under **Settings → Tasks** (default cron `0 5 * * *`). Updates pushed to this repository are applied automatically the next morning — no manual action required.
 
-## Bumper le pack
+## Publishing an update
 
-Pour publier un update :
+1. Edit `packs/platform-pack-community.yaml`.
+2. Bump `pack_version` (e.g. `2026.07.100` → `2026.08.100`, format `YYYY.MM.NNN`).
+3. Commit and push.
 
-1. Éditer `packs/platform-pack-community.yaml`
-2. Incrémenter `pack_version` (ex : `2026.07.100` → `2026.08.100`, format `YYYY.MM.NNN`)
-3. Commit + push
+On the next sync, Romarr computes a diff and applies only what changed. Same version and same hash results in an idempotent skip. Downgrades are rejected.
 
-Romarr calcule un diff au prochain sync et n'applique que ce qui a changé. Même version + même hash → skip idempotent. Downgrades rejetés.
+## Contributing a platform
 
-## Contribuer une plateforme
+Add an entry under `platforms:` that follows the schema:
 
-Ajouter une entry dans `platforms:` en respectant le schéma :
+| Field | Rule |
+|-------|------|
+| `slug` | Must match `^[a-z0-9]+(-[a-z0-9]+)*$` and not already exist ([current builtin](https://github.com/sharkhunterr/romarr/blob/main/romarr/src/romarr/builtin_packs/builtin-2026.05.002.yaml)) |
+| `name`, `manufacturer` | Non-empty strings |
+| `formats[].extension` | Must start with `.` |
+| `formats[].format_type` | One of `cartridge`, `disc`, `compressed`, `archive`, `package` |
 
-- **`slug`** : `^[a-z0-9]+(-[a-z0-9]+)*$` — ne doit pas déjà exister (voir le [builtin actuel](https://github.com/sharkhunterr/romarr/blob/main/romarr/src/romarr/builtin_packs/builtin-2026.05.002.yaml))
-- **`name`**, **`manufacturer`** : non-vides
-- **`formats[].extension`** : commence par `.`
-- **`formats[].format_type`** : `cartridge` | `disc` | `compressed` | `archive` | `package`
+Bump `pack_version` in the same pull request.
 
-Bump `pack_version` dans la même PR.
+## Schema
 
-## Schéma complet
-
-JSON Schema Draft 2020-12 : [`romarr/src/romarr/platform_packs/schema.py`](https://github.com/sharkhunterr/romarr/blob/main/romarr/src/romarr/platform_packs/schema.py).
+Full JSON Schema (Draft 2020-12): [`romarr/src/romarr/platform_packs/schema.py`](https://github.com/sharkhunterr/romarr/blob/main/romarr/src/romarr/platform_packs/schema.py).
