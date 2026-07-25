@@ -1,61 +1,65 @@
-# romarr-plateform-pack
+# romarr-community-packs
 
-Test platform packs pour valider l'intégration `Pack Sources` de [Romarr](https://github.com/sharkhunterr/romarr).
-
-Ce dépôt public sert de source de packs de plateformes : il permet de récupérer (« get ») des plateformes de test directement dans Romarr via le mécanisme des **Pack sources**.
+Platform pack complet pour [Romarr](https://github.com/sharkhunterr/romarr) — mirror du builtin **plus** 6 plateformes additionnelles.
 
 ## Contenu
 
-| Fichier | pack_version | Plateforme testée |
+| Fichier | Version | Plateformes |
 |---|---|---|
-| `packs/test-arcade.yaml` | `2026.07.100` | `test-arcade-cabinet` (cabinet fictif, gen 3) |
-| `packs/test-handheld.yaml` | `2026.07.101` | `test-pocket-console` (handheld fictif, gen 4) |
+| `packs/platform-pack-community.yaml` | `2026.07.100` | 60 (54 builtin + 6 additions) |
 
-Les slugs sont préfixés `test-*` pour garantir aucune collision avec les packs builtin.
+### Ce qui est ajouté par rapport au builtin `2026.05.002`
 
-## Comment tester dans Romarr
+**Gen 8-9 home consoles** (le builtin s'arrête à la gen 7-8) :
 
-Ouvre **Settings → Platforms → Pack sources** puis ajoute une source.
+- `ps4` — PlayStation 4 · Sony · 2013
+- `ps5` — PlayStation 5 · Sony · 2020
+- `xbox-one` — Xbox One · Microsoft · 2013
+- `xbox-series` — Xbox Series X/S · Microsoft · 2020
 
-### Test A — dossier complet (walker GitHub API)
+**Retro Japonais** (souvent absents des DAT packs occidentaux) :
 
-- **Nom** : `Test packs (dir)`
-- **URL** : `https://github.com/sharkhunterr/romarr-plateform-pack/tree/main/packs`
-- Auto-détecté comme `github_dir` → walk tous les `*.yaml` du dossier
+- `x68000` — Sharp X68000 · 1987
+- `pc98` — NEC PC-9800 Series · 1982
 
-Attendu au **Preview** :
-- 2 YAMLs listés
-- Chacun avec action `would_apply` (fresh slugs)
-- Diff par plateforme : `+ test-arcade-cabinet`, `+ test-pocket-console`
+Chaque plateforme embarque les IDs IGDB, ScreenScraper et MobyGames pour que le scraper métadonnées les trouve automatiquement.
 
-### Test B — fichier unique (raw)
+## Installation dans Romarr
 
-- **Nom** : `Test arcade only`
-- **URL** : `https://raw.githubusercontent.com/sharkhunterr/romarr-plateform-pack/main/packs/test-arcade.yaml`
-- Auto-détecté comme `raw`
+**Settings → Platforms → Pack sources** → Add source :
 
-Attendu au **Preview** :
-- 1 YAML listé, `would_apply`
+- **Nom** : `Community pack`
+- **URL** (dir) : `https://github.com/sharkhunterr/romarr-plateform-pack/tree/main/packs`
+  
+  ou **URL** (raw single-file) : `https://raw.githubusercontent.com/sharkhunterr/romarr-plateform-pack/main/packs/platform-pack-community.yaml`
 
-### Test C — idempotence
+Puis **Preview** → **Apply now**. Les 6 nouveaux slugs apparaissent en `+ inserted`, les 54 existants en `~ updated` ou `= skipped` selon les métadonnées.
 
-Après un premier `Sync now` réussi, re-clique **Preview** → chaque YAML doit apparaître avec action `would_skip` (même hash, déjà en DB).
+## Auto-sync
 
-### Test D — auto-sync programmé
+Active le job `PackSourcesSync` dans **Settings → Tasks** (cron `0 5 * * *` par défaut). Les updates poussés sur ce repo landent le lendemain matin sans intervention.
 
-**Settings → Tasks** → active `PackSourcesSync`, ajuste le cron (ex : `*/5 * * * *` pour toutes les 5 min) → la row `pack_sources` dans **Settings → Platforms** doit se re-stamper avec un nouveau `last_synced_at`.
+## Bumper le pack
 
-## Format du pack
+Pour publier un update :
 
-Voir le schéma dans `romarr/src/romarr/platform_packs/schema.py` (Draft 2020-12). Champs obligatoires :
+1. Éditer `packs/platform-pack-community.yaml`
+2. Incrémenter `pack_version` (ex : `2026.07.100` → `2026.08.100`, format `YYYY.MM.NNN`)
+3. Commit + push
 
-- `pack_version` : format `YYYY.MM.NNN` (ex `2026.07.100`)
-- `schema_version` : `1`
-- `platforms[].slug` : `kebab-case`
-- `platforms[].name`, `manufacturer` : chaînes non-vides
-- `platforms[].formats[].extension` : commence par `.`
-- `platforms[].formats[].format_type` : `cartridge` | `disc` | `compressed` | `archive` | `package`
+Romarr calcule un diff au prochain sync et n'applique que ce qui a changé. Même version + même hash → skip idempotent. Downgrades rejetés.
 
-## Nettoyage
+## Contribuer une plateforme
 
-Pour retirer les plateformes tests de Romarr, va dans **Settings → Platforms**, sélectionne les slugs `test-*` et override-les manuellement (le pack builtin ne les recréera pas).
+Ajouter une entry dans `platforms:` en respectant le schéma :
+
+- **`slug`** : `^[a-z0-9]+(-[a-z0-9]+)*$` — ne doit pas déjà exister (voir le [builtin actuel](https://github.com/sharkhunterr/romarr/blob/main/romarr/src/romarr/builtin_packs/builtin-2026.05.002.yaml))
+- **`name`**, **`manufacturer`** : non-vides
+- **`formats[].extension`** : commence par `.`
+- **`formats[].format_type`** : `cartridge` | `disc` | `compressed` | `archive` | `package`
+
+Bump `pack_version` dans la même PR.
+
+## Schéma complet
+
+JSON Schema Draft 2020-12 : [`romarr/src/romarr/platform_packs/schema.py`](https://github.com/sharkhunterr/romarr/blob/main/romarr/src/romarr/platform_packs/schema.py).
