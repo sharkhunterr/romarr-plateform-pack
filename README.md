@@ -12,7 +12,7 @@
 
 | File | Version | Platforms |
 |------|---------|-----------|
-| `packs/platform-pack-community.yaml` | `2026.07.200` | 60 (54 builtin + 6 additions) |
+| `packs/platform-pack-community.yaml` | `2026.07.201` | 60 (54 builtin + 6 additions) |
 
 Every platform ships with its IGDB, ScreenScraper, and MobyGames IDs so the metadata scraper can match them automatically. Every platform also accepts the universal archive extensions `.zip`, `.7z`, and `.rar`, since ROMs are almost always distributed archived.
 
