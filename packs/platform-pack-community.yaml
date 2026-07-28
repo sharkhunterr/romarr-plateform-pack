@@ -88,6 +88,7 @@ platforms:
     name: "Famicom Disk System"
     short_name: "FDS"
     manufacturer: Nintendo
+    aliases: ["famicom disk system", "famicom ds", "fds", "disk system", "fdsys"]
     generation: 3
     release_year: 1986
     is_handheld: false
