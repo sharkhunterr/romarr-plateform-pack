@@ -1,0 +1,11 @@
+{
+  "romarr_pack": true,
+  "kind": "platform_pack",
+  "version": "2026.07.201",
+  "name": "Romarr Community Platform Pack",
+  "description": "Pack communautaire de définitions de plateformes",
+  "min_romarr_version": "0.14.0",
+  "items": [
+    {"path": "packs/platform-pack-community.yaml"}
+  ]
+}
