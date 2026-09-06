@@ -619,6 +619,16 @@ platforms:
       - extension: ".chd"
         format_type: compressed
         is_compressed: true
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
@@ -683,6 +693,16 @@ platforms:
         is_compressed: true
       - extension: ".iso"
         format_type: disc
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
@@ -716,6 +736,20 @@ platforms:
       - extension: ".chd"
         format_type: compressed
         is_compressed: true
+      - extension: ".cue"
+        format_type: disc
+        requires_companion: true
+        companion_extensions: [".bin"]
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
@@ -754,6 +788,16 @@ platforms:
         is_compressed: true
       - extension: ".pbp"
         format_type: package
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
@@ -785,6 +829,20 @@ platforms:
       - extension: ".chd"
         format_type: compressed
         is_compressed: true
+      - extension: ".cue"
+        format_type: disc
+        requires_companion: true
+        companion_extensions: [".bin"]
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
@@ -1219,6 +1277,16 @@ platforms:
       - extension: ".chd"
         format_type: compressed
         is_compressed: true
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
@@ -1247,6 +1315,16 @@ platforms:
         is_primary: true
         requires_companion: true
         companion_extensions: [".bin"]
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
@@ -1394,6 +1472,16 @@ platforms:
       - extension: ".chd"
         format_type: compressed
         is_compressed: true
+      - extension: ".bin"
+        format_type: disc
+      - extension: ".img"
+        format_type: disc
+      - extension: ".mdf"
+        format_type: disc
+      - extension: ".mds"
+        format_type: disc
+      - extension: ".nrg"
+        format_type: disc
       - extension: ".zip"
         format_type: archive
         is_compressed: true
